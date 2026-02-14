@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para ti ❤️</title>
+  <style>
+    :root{
+      --bg1:#ff9aa2;
+      --bg2:#ffdde1;
+      --accent:#ff4d6d;
+      --card:#ffffffee;
+      --text:#2b2b2b;
+    }
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: system-ui, -apple-system, Arial, sans-serif;
+      background: radial-gradient(circle at 20% 20%, var(--bg2), var(--bg1));
+      overflow:hidden;
+      color:var(--text);
+    }
+
+    /* Fondo suave animado */
+    .glow{
+      position:fixed;
+      inset:-20%;
+      background:
+        radial-gradient(circle at 30% 30%, #ffffff55 0 20%, transparent 55%),
+        radial-gradient(circle at 70% 70%, #ffffff40 0 18%, transparent 60%);
+      filter: blur(20px);
+      animation: float 8s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+    @keyframes float{
+      from{ transform: translate(-10px, -10px) scale(1); }
+      to{ transform: translate(10px, 10px) scale(1.05); }
+    }
+
+    .card{
+      width:min(92vw, 560px);
+      background:var(--card);
+      border:1px solid #ffffffaa;
+      border-radius:22px;
+      padding:26px 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      position:relative;
+    }
+
+    .tag{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#fff;
+      font-size:14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+      margin-bottom:14px;
+    }
+
+    h1{
+      margin:6px 0 8px;
+      font-size:34px;
+      line-height:1.1;
+      color:#111;
+    }
+
+    .subtitle{
+      margin:0 0 14px;
+      font-size:16px;
+      opacity:.9;
+    }
+
+    .typebox{
+      margin:14px 0 16px;
+      padding:16px 14px;
+      border-radius:16px;
+      background:#fff;
+      border:1px solid #f2f2f2;
+      min-height:74px;
+      font-size:18px;
+      line-height:1.4;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+    }
+
+    button{
+      border:none;
+      padding:14px 18px;
+      border-radius:14px;
+      font-size:16px;
+      cursor:pointer;
+      background: linear-gradient(135deg, var(--accent), #ff7aa2);
+      color:white;
+      box-shadow: 0 14px 30px rgba(255,77,109,.35);
+      transition: transform .08s ease, filter .2s ease;
+    }
+    button:active{ transform: scale(.98); }
+    button:hover{ filter: brightness(1.03); }
+
+    .small{
+      background:#fff;
+      color:#111;
+      border:1px solid #eee;
+      box-shadow: 0 10px 20px rgba(0,0,0,.08);
+      padding:12px 14px;
+    }
+
+    .footer{
+      margin-top:14px;
+      font-size:13px;
+      opacity:.75;
+      text-align:center;
+    }
+
+    /* Corazones/Tulipanes/Cerditos flotantes */
+    .floaty{
+      position:fixed;
+      left:50%;
+      top:50%;
+      font-size:18px;
+      pointer-events:none;
+      animation: rise 1.5s ease forwards;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
+    }
+    @keyframes rise{
+      0% { transform: translate(-50%, -10%) scale(1); opacity:1; }
+      100% { transform: translate(calc(-50% + var(--x)), calc(-50% - 240px)) scale(1.35); opacity:0; }
+    }
+
+    /* Galería */
+    .gallery{
+      margin-top:14px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    .ph{
+      width:100%;
+      aspect-ratio: 1/1;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid #eee;
+      background:#fff;
+      position:relative;
+      cursor:pointer;
+    }
+    .ph img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      transform: scale(1.02);
+      transition: transform .2s ease;
+    }
+    .ph:hover img{ transform: scale(1.06); }
+
+    /* Visor grande */
+    .lightbox{
+      position:fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+      z-index:99;
+    }
+    .lightbox.open{ display:flex; }
+    .lightbox img{
+      max-width:min(96vw, 720px);
+      max-height:82vh;
+      border-radius:16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+
+  <main class="card">
+    <div class="tag">🌷 <strong>San Valentín</strong> · hecho por mí 🐷</div>
+
+    <!-- PERSONALIZA AQUÍ -->
+    <h1>Para <span id="nombre">TU NOMBRE AQUÍ</span> ❤️</h1>
+    <p class="subtitle">Tengo motivos… pero primero toca el botón 🙂</p>
+
+    <section class="typebox" id="texto"></section>
+
+    <div class="row">
+      <button id="btn">Abrir mensaje</button>
+      <button class="small" id="btn2" style="display:none;">Otro motivo de te amo</button>
+    </div>
+
+    <!-- FOTOS: cambia los nombres por los tuyos -->
+    <div class="gallery" id="gallery" aria-label="Fotos de nosotros">
+      <div class="ph"><img src="foto1.jpg" alt="Foto 1"></div>
+      <div class="ph"><img src="foto2.jpg" alt="Foto 2"></div>
+      <div class="ph"><img src="foto3.jpg" alt="Foto 3"></div>
+    </div>
+
+    <p class="footer">P.D.: si escaneaste esto, ya me hiciste sonreír 🌷🐷</p>
+  </main>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-label="Foto ampliada">
+    <img id="lbimg" alt="Foto ampliada">
+  </div>
+
+  <script>
+    // PERSONALIZA FRASES AQUÍ (motivos):
+    const frases = [
+      "Te amo porque contigo puedo ser yo de verdad. ❤️",
+      "Te amo por cómo me haces sentir en los días normales. 🌷",
+      "Te amo por tus detalles, aunque sean pequeñitos. 🐷",
+      "Te amo porque eres mi lugar seguro. 💗",
+      "Te amo por todas nuestras risas. ✨"
+    ];
+
+    const texto = document.getElementById("texto");
+    const btn = document.getElementById("btn");
+    const btn2 = document.getElementById("btn2");
+
+    let idx = 0;
+    let escribiendo = false;
+    let yaSeAbrio = false;
+
+    function typewrite(msg){
+      if(escribiendo) return;
+      escribiendo = true;
+      texto.textContent = "";
+      let i = 0;
+
+      const tick = () => {
+        texto.textContent += msg[i];
+        i++;
+        if(i < msg.length){
+          setTimeout(tick, 18);
+        } else {
+          escribiendo = false;
+        }
+      };
+      tick();
+    }
+
+    function lanzarFloresYCerditos(cuantos = 14){
+      const emojis = ["🌷","🌷","🌷","💐","🌸","❤️","💗","🐷","🐽","✨"];
+      for(let i=0;i<cuantos;i++){
+        const e = document.createElement("div");
+        e.className = "floaty";
+        e.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        e.style.setProperty("--x", (Math.random()*260 - 130) + "px");
+        e.style.left = (50 + (Math.random()*10 - 5)) + "%";
+        e.style.top = (54 + (Math.random()*8 - 4)) + "%";
+        e.style.fontSize = (16 + Math.random()*20) + "px";
+        document.body.appendChild(e);
+        setTimeout(()=> e.remove(), 1600);
+      }
+    }
+
+    btn.addEventListener("click", () => {
+      if(yaSeAbrio) return;
+      yaSeAbrio = true;
+
+      typewrite(frases[idx]);
+      lanzarFloresYCerditos(18);
+
+      // Desaparece el botón grande y aparece el pequeño
+      btn.style.display = "none";
+      btn2.style.display = "inline-block";
+      document.querySelector(".subtitle").textContent = "Sigue tocando para ver más motivos 😄";
+    });
+
+    btn2.addEventListener("click", () => {
+      idx = (idx + 1) % frases.length;
+      typewrite(frases[idx]);
+      lanzarFloresYCerditos(12);
+    });
+
+    // Mensaje inicial
+    setTimeout(()=> typewrite("Toca “Abrir mensaje” cuando estés lista/o 🌷"), 300);
+
+    // Lightbox para ver fotos grandes
+    const lightbox = document.getElementById("lightbox");
+    const lbimg = document.getElementById("lbimg");
+
+    document.getElementById("gallery").addEventListener("click", (e) => {
+      const img = e.target.closest("img");
+      if(!img) return;
+      lbimg.src = img.src;
+      lightbox.classList.add("open");
+    });
+
+    lightbox.addEventListener("click", () => {
+      lightbox.classList.remove("open");
+      lbimg.src = "";
+    });
+  </script>
+</body>
+</html>

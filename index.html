@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para ti ❤️</title>
+  <style>
+    :root{
+      --bg1:#ff9aa2;
+      --bg2:#ffdde1;
+      --accent:#ff4d6d;
+      --card:#ffffffee;
+      --text:#2b2b2b;
+    }
+
+    *{ box-sizing:border-box; }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: system-ui, -apple-system, Arial, sans-serif;
+      background: radial-gradient(circle at 20% 20%, var(--bg2), var(--bg1));
+      overflow:hidden;
+      color:var(--text);
+    }
+
+    /* Fondo suave animado */
+    .glow{
+      position:fixed;
+      inset:-20%;
+      background: radial-gradient(circle at 30% 30%, #ffffff55 0 20%, transparent 55%),
+                  radial-gradient(circle at 70% 70%, #ffffff40 0 18%, transparent 60%);
+      filter: blur(20px);
+      animation: float 8s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+    @keyframes float{
+      from{ transform: translate(-10px, -10px) scale(1); }
+      to{ transform: translate(10px, 10px) scale(1.05); }
+    }
+
+    .card{
+      width:min(92vw, 520px);
+      background:var(--card);
+      border:1px solid #ffffffaa;
+      border-radius:22px;
+      padding:26px 22px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.18);
+      backdrop-filter: blur(10px);
+      position:relative;
+    }
+
+    .tag{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#fff;
+      font-size:14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.08);
+      margin-bottom:14px;
+    }
+
+    h1{
+      margin:6px 0 8px;
+      font-size:36px;
+      line-height:1.1;
+      color:#111;
+    }
+
+    .subtitle{
+      margin:0 0 18px;
+      font-size:16px;
+      opacity:.9;
+    }
+
+    .typebox{
+      margin:14px 0 18px;
+      padding:16px 14px;
+      border-radius:16px;
+      background:#fff;
+      border:1px solid #f2f2f2;
+      min-height:72px;
+      font-size:18px;
+      line-height:1.4;
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:center;
+    }
+
+    button{
+      border:none;
+      padding:14px 18px;
+      border-radius:14px;
+      font-size:16px;
+      cursor:pointer;
+      background: linear-gradient(135deg, var(--accent), #ff7aa2);
+      color:white;
+      box-shadow: 0 14px 30px rgba(255,77,109,.35);
+      transition: transform .08s ease, filter .2s ease;
+    }
+    button:active{ transform: scale(.98); }
+    button:hover{ filter: brightness(1.03); }
+
+    .small{
+      background:#fff;
+      color:#111;
+      border:1px solid #eee;
+      box-shadow: 0 10px 20px rgba(0,0,0,.08);
+    }
+
+    .footer{
+      margin-top:16px;
+      font-size:13px;
+      opacity:.75;
+      text-align:center;
+    }
+
+    /* Corazones flotantes */
+    .heart{
+      position:fixed;
+      left:50%;
+      top:50%;
+      font-size:18px;
+      pointer-events:none;
+      animation: rise 1.3s ease forwards;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
+    }
+    @keyframes rise{
+      0% { transform: translate(-50%, -10%) scale(1); opacity:1; }
+      100% { transform: translate(calc(-50% + var(--x)), calc(-50% - 220px)) scale(1.35); opacity:0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow"></div>
+
+  <main class="card">
+    <div class="tag">💌 <strong>San Valentín</strong> · hecho por mí</div>
+
+    <!-- PERSONALIZA AQUÍ -->
+    <h1>Para <span id="nombre">TU NOMBRE AQUÍ</span> ❤️</h1>
+    <p class="subtitle">Tengo un mensaje… pero primero toca el botón 🙂</p>
+
+    <section class="typebox" id="texto"></section>
+
+    <div class="row">
+      <button id="btn">Abrir mensaje</button>
+      <button class="small" id="btn2">Otra frase</button>
+    </div>
+
+    <p class="footer">P.D.: si escaneaste esto, ya me ganaste el corazón 😄</p>
+  </main>
+
+  <script>
+    // PERSONALIZA FRASES AQUÍ:
+    const frases = [
+      "Desde que llegaste, todo tiene más color. Feliz San Valentín ❤️",
+      "Eres mi casualidad favorita ✨",
+      "Te elegiría en todas mis versiones.",
+      "Gracias por existir y por hacerme sonreír.",
+      "Hoy te regalo esto… pero en realidad me gustas todos los días."
+    ];
+
+    const texto = document.getElementById("texto");
+    const btn = document.getElementById("btn");
+    const btn2 = document.getElementById("btn2");
+
+    let idx = 0;
+    let escribiendo = false;
+
+    function typewrite(msg){
+      if(escribiendo) return;
+      escribiendo = true;
+      texto.textContent = "";
+      let i = 0;
+
+      const tick = () => {
+        texto.textContent += msg[i];
+        i++;
+        if(i < msg.length){
+          setTimeout(tick, 18);
+        } else {
+          escribiendo = false;
+        }
+      };
+      tick();
+    }
+
+    function lanzarCorazones(cuantos = 10){
+      const emojis = ["❤️","💗","💖","💕","💘","🌸","✨"];
+      for(let i=0;i<cuantos;i++){
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        h.style.setProperty("--x", (Math.random()*240 - 120) + "px");
+        h.style.left = (50 + (Math.random()*8 - 4)) + "%";
+        h.style.top = (52 + (Math.random()*6 - 3)) + "%";
+        h.style.fontSize = (16 + Math.random()*18) + "px";
+        document.body.appendChild(h);
+        setTimeout(()=> h.remove(), 1400);
+      }
+    }
+
+    btn.addEventListener("click", () => {
+      typewrite(frases[idx]);
+      lanzarCorazones(14);
+    });
+
+    btn2.addEventListener("click", () => {
+      idx = (idx + 1) % frases.length;
+      typewrite(frases[idx]);
+      lanzarCorazones(10);
+    });
+
+    // Mensaje inicial suave
+    setTimeout(()=> typewrite("Toca “Abrir mensaje” cuando estés lista/o 💗"), 300);
+  </script>
+</body>
+</html>

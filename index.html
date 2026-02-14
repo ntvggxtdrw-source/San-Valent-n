@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Para ti ❤️</title>
+  <style>
+    body {
+      background: linear-gradient(#ff9aa2, #ffdde1);
+      text-align: center;
+      font-family: Arial;
+      padding-top: 100px;
+      color: white;
+    }
+
+    h1 {
+      font-size: 45px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      background-color: white;
+      color: #ff5e78;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Para (SU NOMBRE) ❤️</h1>
+
+<button onclick="mostrarMensaje()">Haz clic aquí</button>
+
+<p id="mensaje" style="margin-top:20px;font-size:20px;"></p>
+
+<script>
+function mostrarMensaje() {
+  document.getElementById("mensaje").innerHTML = 
+  "Desde que llegaste, todo tiene más color. Feliz San Valentín ❤️";
+}
+</script>
+
+</body>
+</html>
